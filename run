@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+db     = ARGV[0]
+port   = Integer(ARGV[1] || 6382)
+run_to = Integer(ARGV[2] || db)
+
+0.upto(run_to) do |i|
+  File.readlines(String(i)).each do |line|
+    cmd = %(echo "#{line.strip}" | xargs redis-cli -p #{port} -n #{db})
+
+    puts cmd
+    `#{cmd}`
+  end
+end
